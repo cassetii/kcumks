@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Data AC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Form Input Data Unit AC</h1>
+    <form id="acForm">
+        <label for="letakAC">Letak AC</label>
+        <select id="letakAC">
+            <option value="Kantor Kas">Kantor Kas</option>
+            <option value="Gedung ATM">Gedung ATM</option>
+        </select>
+
+        <label for="jalan">Jalan</label>
+        <input type="text" id="jalan" required>
+
+        <label for="model">Model</label>
+        <select id="model">
+            <option value="Midea">Midea</option>
+            <option value="Daikin">Daikin</option>
+            <option value="LG">LG</option>
+            <option value="Panasonic">Panasonic</option>
+            <option value="Samsung">Samsung</option>
+            <option value="TCL">TCL</option>
+            <option value="Changhong">Changhong</option>
+            <option value="Toshiba">Toshiba</option>
+        </select>
+
+        <label for="kapasitas">Kapasitas</label>
+        <select id="kapasitas">
+            <option value="1/2pk">1/2pk</option>
+            <option value="1pk">1pk</option>
+            <option value="2pk">2pk</option>
+        </select>
+
+        <label for="freon">Type Freon</label>
+        <select id="freon">
+            <option value="R32">R32</option>
+            <option value="R410">R410</option>
+            <option value="R22">R22</option>
+        </select>
+
+        <div class="form-buttons">
+            <button type="submit">Simpan Data</button>
+            <button type="button" onclick="window.location.href='data.html';">Lihat Data</button>
+        </div>
+    </form>
+
+<!-- Import Firebase SDK -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
+
+    
+</body>
+</html>
