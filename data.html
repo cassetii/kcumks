@@ -23,13 +23,81 @@
             <!-- Data akan ditampilkan di sini -->
         </tbody>
     </table>
-    
 
     <div class="action-buttons">
         <button onclick="window.location.href='index.html';">Halaman Utama</button>
     </div>
 
-    <script src="firebase.js"></script>
-    <script src="script.js"></script>
+    <!-- Tambahkan type="module" agar file JS bisa menggunakan import -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyC32ogV4MXkNwfTxYcBzejTjfM2vdIGV6s",
+            authDomain: "kcumks-eb203.firebaseapp.com",
+            projectId: "kcumks-eb203",
+            storageBucket: "kcumks-eb203.firebasestorage.app",
+            messagingSenderId: "905778145865",
+            appId: "1:905778145865:web:bd5c6d8f216b791a3ded98"
+        };
+
+        // Inisialisasi aplikasi Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Inisialisasi Firestore
+        const db = getFirestore(app);
+
+        // Fetch data from Firestore and populate the table
+        async function fetchData() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "unitAC"));
+                const tableBody = document.querySelector("#dataTable tbody");
+
+                // Check if the collection has documents
+                if (querySnapshot.empty) {
+                    console.log("No documents found in Firestore.");
+                    return;
+                }
+
+                // Loop through each document and add it to the table
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const row = document.createElement("tr");
+
+                    // Create and append table cells for each piece of data
+                    row.innerHTML = `
+                        <td>${data.letakAC || 'N/A'}</td>
+                        <td>${data.jalan || 'N/A'}</td>
+                        <td>${data.model || 'N/A'}</td>
+                        <td>${data.kapasitas || 'N/A'}</td>
+                        <td>${data.freon || 'N/A'}</td>
+                        <td>
+                            <button onclick="deleteData('${doc.id}')">Hapus</button>
+                        </td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+        }
+
+        // Call fetchData on page load
+        window.onload = fetchData;
+
+        // Function to delete data from Firestore
+        async function deleteData(docId) {
+            try {
+                const docRef = doc(db, "unitAC", docId);
+                await deleteDoc(docRef);
+                location.reload(); // Reload to update the table
+            } catch (error) {
+                console.error("Error deleting document: ", error);
+            }
+        }
+    </script>
 </body>
 </html>

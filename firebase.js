@@ -1,6 +1,6 @@
 // Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Konfigurasi Firebase Anda
 const firebaseConfig = {
@@ -37,10 +37,33 @@ async function tambahDataAC(letakAC, jalan, model, kapasitas, freon) {
 // Fungsi untuk mendapatkan data dari Firestore
 async function ambilDataAC() {
     const querySnapshot = await getDocs(collection(db, "unitAC"));
+    const data = [];
     querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        data.push({ id: doc.id, ...doc.data() });
     });
+    return data;
+}
+
+// Fungsi untuk memperbarui data di Firestore
+async function updateDataAC(docId, letakAC, jalan, model, kapasitas, freon) {
+    const docRef = doc(db, "unitAC", docId);
+    await updateDoc(docRef, {
+        letakAC: letakAC,
+        jalan: jalan,
+        model: model,
+        kapasitas: kapasitas,
+        freon: freon,
+        timestamp: new Date()
+    });
+    console.log("Dokumen berhasil diperbarui!");
+}
+
+// Fungsi untuk menghapus data di Firestore
+async function deleteDataAC(docId) {
+    const docRef = doc(db, "unitAC", docId);
+    await deleteDoc(docRef);
+    console.log("Dokumen berhasil dihapus!");
 }
 
 // Export fungsi untuk digunakan di file lain
-export { tambahDataAC, ambilDataAC };
+export { tambahDataAC, ambilDataAC, updateDataAC, deleteDataAC };
